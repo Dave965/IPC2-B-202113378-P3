@@ -56,12 +56,39 @@ class Recurso:
         self.tipo = tipo
         self.precio = precio
 
+    def convertir_json(self):
+        json_final = {}
+        json_final["id_recurso"] = self.id_recurso
+        json_final["nombre"] = self.nombre
+        json_final["abrev"] = self.abrev
+        json_final["metrica"] = self.metrica
+        json_final["tipo"] = self.tipo
+        json_final["precio"] = self.precio
+
+        return json_final
+
 class Configuracion:
     def __init__(self, id_configuracion, nombre, desc, lista_recursos):
         self.id_configuracion = id_configuracion
         self.nombre = nombre
         self.desc = desc
         self.lista_recursos = lista_recursos
+
+    def convertir_json(self):
+        json_final = {}
+        json_final["id_configuracion"] = self.id_configuracion
+        json_final["nombre"] = self.nombre
+        json_final["desc"] = self.desc
+
+        lista_recursos = []
+        
+        for recurso in self.lista_recursos:
+            lista_recursos.append(recurso.convertir_json())
+
+        json_final["lista_recursos"] = lista_recursos
+
+        return json_final
+            
 
 class Categoria:
     def __init__(self, id_categoria, nombre, desc, carga, lista_configuraciones):
@@ -71,7 +98,30 @@ class Categoria:
         self.carga = carga
         self.lista_configuraciones = lista_configuraciones
 
+    def convertir_json(self):
+        json_final = {}
+        json_final["id_categoria"] = self.id_categoria
+        json_final["nombre"] = self.nombre
+        json_final["desc"] = self.desc
+        json_final["carga"] = self.carga
+
+        lista_configuraciones = []
+        
+        for configuracion in self.lista_configuraciones:
+            lista_configuraciones.append(configuracion.id_configuracion)
+
+        json_final["lista_configuraciones"] = lista_configuraciones
+
+        return json_final
+
 class Recurso_conf:
     def __init__(self, id_recurso, cantidad):
         self.id_recurso = id_recurso
         self.cantidad = cantidad
+
+    def convertir_json(self):
+        json_final = {}
+        json_final["id_recurso"] = self.id_recurso
+        json_final["cantidad"] = self.cantidad
+
+        return json_final
