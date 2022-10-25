@@ -9,6 +9,7 @@ global_recursos = []
 global_configs = []
 global_clientes = []
 global_consumos = []
+global_facturas = []
 
 #Cliente("nit", "nombre", "usuario", "clave", "direccion", "email", [Instancia("1","2104","12/17/2024","cancelada",None),Instancia("2","3104","12/11/2024","activa",None)])
 
@@ -190,8 +191,8 @@ def cargar_config():
     return jsonify({"mensaje": "se han creado "+str(clientes_creados)+" clientes, "+str(instancias_creadas)+" instancias, "
                     +str(recursos_creados)+" recursos, "+str(categorias_creadas)+" categorias y "+str(configs_creadas)+" configuraciones con exito"})
 
-@app.route("/crear_consumo" )
-def crear_consumo():
+@app.route("/cargar_consumo" )
+def cargar_consumo():
     consumos_procesados = 0
 
     xml_S = request.get_data()
@@ -226,23 +227,59 @@ def facturar():
     if len(consumos_por_facturar) == 0:
         return jsonify({"mensaje": "Nada por facturar, intente con otra fecha"})
 
-    for consumo in consumos_por_facturar:
-        nitCliente = consumo.attributes["nitCliente"].value
-        idInstancia = consumo.attributes["idInstancia"].value
-        tiempo = float(consumo.getElementsByTagName("tiempo")[0].firstChild.data)
-        fechah = consumo.getElementsByTagName("fechaHora")[0].firstChild.data
-        match_str = re.search(r'\d{2}/\d{2}/\d{4}', fechah)
-        fechaHora = datetime.strptime(match_str.group(), '%d/%m/%Y').date()
+    for cliente in global_clientes:
+        id_factura = str(len(global_facturas)+1).zfill(12)
+        nitCliente = cliente.nit
+        fechaFactura = f_final
+        consumos = [x for x in consumos_por_facturar if x.nitCliente == nitCliente]
+        if len(consumos) > 0:
+            global_facturas.append(Factura(id_factura, nitCliente, fechaFactura, consumos))
+            facturas_creadas += 1
 
-        global_consumos.append(Consumo(nitCliente, idInstancia, tiempo, fechaHora))
-        consumos_procesados += 1
+    return jsonify({"mensaje": "se han creado "+str(facturas_creadas)+" facturas"})
         
+@app.route("/detalle_factura" )
+def detalle_factura():
+    id_factura = request.json["factura"]
+    archivo = "              Detalle para la Factura "+id_factura+"\n"
+    total = 0
+    factura = [x for x in global_facturas if x.id_factura == id_factura][0]
+    cliente  = [x for x in global_clientes if x.nit == factura.nitCliente][0]
 
-    return jsonify({"mensaje": "se han procesado "+str(consumos_procesados)+" consumos"})
-        
-        
+    archivo += "Nit del cliente: "+cliente.nit+"\n"
+    archivo += "Fecha de facturacion: "+str(factura.fechaFactura)+"\n"
+    
+    instancias_revisadas = []
+    
+    for consumo in factura.consumos:
+        if consumo.idInstancia in instancias_revisadas:
+            continue
+        consumos_misma_instancia = [x for x in factura.consumos if x.idInstancia not in instancias_revisadas and x.idInstancia == consumo.idInstancia]
+        instancias_revisadas.append(consumo.idInstancia)
+        instancia = [x for x in cliente.lista_instancias if x.id_instancia == consumo.idInstancia][0]
+        tiempo_total_instancia = 0
+        for x in consumos_misma_instancia:
+            tiempo_total_instancia += consumo.tiempo
+
+        archivo += "    Instancia: "+instancia.nombre+"\n"
+        archivo += "    Tiempo utilizado: "+str(tiempo_total_instancia)+" horas\n"
+        conf = [x for x in global_configs if x.id_configuracion == instancia.id_config][0]
+        archivo += "    Aporte: Q"+str(round(tiempo_total_instancia*conf.precio_total, 2))+" horas\n"
+        archivo += "        Detalle de recursos: \n"
+        for recurso in conf.lista_recursos:
+            rec = [x for x in global_recursos if x.id_recurso == recurso.id_recurso]
+            archivo += "            Recurso: "+rec.id_recurso+"\n"
+            archivo += "                Nombre: "+rec.nombre+"\n"
+            archivo += "                Cantidad: "+recurso.cantidad+"\n"
+            archivo += "                Aporte: Q"+str(round(tiempo_total_instancia*rec.precio, 2))+"\n"
+
+        total += tiempo_total_instancia*conf.precio_total
 
 
+    archivo += "Total: Q"+str(round(total, 2))+"\n"
+
+    return jsonify({"detalle": archivo})
+    
 
 
 

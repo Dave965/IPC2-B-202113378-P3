@@ -131,14 +131,16 @@ class Recurso_conf:
 
 class Consumo:
     def __init__(self, nitCliente, idInstancia, tiempo, fechaHora):
-        nitCliente = nitCliente
-        idInstancia = idInstancia
-        tiempo = tiempo
-        fechaHora = fechaHora
-        facturado = False
+        self.nitCliente = nitCliente
+        self.idInstancia = idInstancia
+        self.tiempo = tiempo
+        self.fechaHora = fechaHora
+        self.facturado = False
     
 class Factura:
-    def __init__(self, nitCliente, idInstancia, tiempo, fechaHora):
-        id_factura
-        nitCliente
+    def __init__(self, id_factura, nitCliente, fechaFactura, consumos):
+        self.id_factura = id_factura
+        self.nitCliente = nitCliente
+        self.fechaFactura = fechaFactura
+        self.consumos = consumos
         
