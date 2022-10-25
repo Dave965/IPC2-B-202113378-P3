@@ -28,22 +28,24 @@ class Cliente:
             
 
 class Instancia:
-    def __init__(self, id_instancia, id_config, f_inicio, estado, f_final):
+    def __init__(self, id_instancia, id_config, f_inicio, estado, f_final, nombre):
         self.id_instancia = id_instancia
         self.id_config = id_config
         self.f_inicio = f_inicio
         self.estado = estado
         self.f_final = f_final
+        self.nombre = nombre
         self.tiempo = 0
 
     def convertir_json(self):
         json_final = {}
         json_final["id_instancia"] = self.id_instancia
         json_final["id_config"] = self.id_config
-        json_final["f_inicio"] = self.f_inicio
+        json_final["f_inicio"] = str(self.f_inicio)
         json_final["estado"] = self.estado
-        json_final["f_final"] = self.f_final
+        json_final["f_final"] = str(self.f_final)
         json_final["tiempo"] = self.tiempo
+        json_final["nombre"] = self.nombre
 
         return json_final
         
@@ -68,10 +70,11 @@ class Recurso:
         return json_final
 
 class Configuracion:
-    def __init__(self, id_configuracion, nombre, desc, lista_recursos):
+    def __init__(self, id_configuracion, nombre, desc, precio_total, lista_recursos):
         self.id_configuracion = id_configuracion
         self.nombre = nombre
         self.desc = desc
+        self.precio_total = precio_total
         self.lista_recursos = lista_recursos
 
     def convertir_json(self):
@@ -125,3 +128,17 @@ class Recurso_conf:
         json_final["cantidad"] = self.cantidad
 
         return json_final
+
+class Consumo:
+    def __init__(self, nitCliente, idInstancia, tiempo, fechaHora):
+        nitCliente = nitCliente
+        idInstancia = idInstancia
+        tiempo = tiempo
+        fechaHora = fechaHora
+        facturado = False
+    
+class Factura:
+    def __init__(self, nitCliente, idInstancia, tiempo, fechaHora):
+        id_factura
+        nitCliente
+        
