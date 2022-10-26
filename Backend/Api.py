@@ -10,8 +10,7 @@ global_configs = []
 global_clientes = []
 global_consumos = []
 global_facturas = []
-
-#Cliente("nit", "nombre", "usuario", "clave", "direccion", "email", [Instancia("1","2104","12/17/2024","cancelada",None),Instancia("2","3104","12/11/2024","activa",None)])
+global_instancias = []
 
 app = Flask(__name__)
 
@@ -106,11 +105,11 @@ def cargar_config():
     listaRecursos = xml_O.getElementsByTagName("listaRecursos")[0]
     Recursos = listaRecursos.getElementsByTagName("recurso")
     for recurso in Recursos:
-        id_recurso = recurso.attributes["id"].value
-        nombre = recurso.getElementsByTagName("nombre")[0].firstChild.data
-        abrev = recurso.getElementsByTagName("abreviatura")[0].firstChild.data
-        metrica = recurso.getElementsByTagName("metrica")[0].firstChild.data
-        tipo = recurso.getElementsByTagName("tipo")[0].firstChild.data
+        id_recurso = recurso.attributes["id"].value.strip()
+        nombre = recurso.getElementsByTagName("nombre")[0].firstChild.data.strip()
+        abrev = recurso.getElementsByTagName("abreviatura")[0].firstChild.data.strip()
+        metrica = recurso.getElementsByTagName("metrica")[0].firstChild.data.strip()
+        tipo = recurso.getElementsByTagName("tipo")[0].firstChild.data.strip()
         precio = float(recurso.getElementsByTagName("valorXhora")[0].firstChild.data)
 
         global_recursos.append(Recurso(id_recurso, nombre, abrev, metrica, tipo, precio))
@@ -119,23 +118,23 @@ def cargar_config():
     listaCategorias = xml_O.getElementsByTagName("listaCategorias")[0]
     Categorias = listaCategorias.getElementsByTagName("categoria")
     for categoria in Categorias:
-        id_categoria = categoria.attributes["id"].value
-        nombre_categoria = categoria.getElementsByTagName("nombre")[0].firstChild.data
-        desc_categoria = categoria.getElementsByTagName("descripcion")[0].firstChild.data
-        carga = categoria.getElementsByTagName("cargaTrabajo")[0].firstChild.data
+        id_categoria = categoria.attributes["id"].value.strip()
+        nombre_categoria = categoria.getElementsByTagName("nombre")[0].firstChild.data.strip()
+        desc_categoria = categoria.getElementsByTagName("descripcion")[0].firstChild.data.strip()
+        carga = categoria.getElementsByTagName("cargaTrabajo")[0].firstChild.data.strip()
         lista_configuraciones = []
         
         Configuraciones = categoria.getElementsByTagName("configuracion")
         for configuracion in Configuraciones:
-            id_configuracion = configuracion.attributes["id"].value
-            nombre_conf = configuracion.getElementsByTagName("nombre")[0].firstChild.data
-            desc_conf = configuracion.getElementsByTagName("descripcion")[0].firstChild.data
+            id_configuracion = configuracion.attributes["id"].value.strip()
+            nombre_conf = configuracion.getElementsByTagName("nombre")[0].firstChild.data.strip()
+            desc_conf = configuracion.getElementsByTagName("descripcion")[0].firstChild.data.strip()
             lista_recursos = []
             precio_total = 0
 
             Recursos = configuracion.getElementsByTagName("recurso")
             for recurso in Recursos:
-                id_recurso = recurso.attributes["id"].value
+                id_recurso = recurso.attributes["id"].value.strip()
                 cantidad = float(recurso.firstChild.data)
                 try:
                     rec = [x for x in global_recursos if x.id_recurso == id_recurso]
@@ -156,33 +155,35 @@ def cargar_config():
     listaClientes = xml_O.getElementsByTagName("listaClientes")[0]
     Clientes = listaClientes.getElementsByTagName("cliente")
     for cliente in Clientes:
-        nit = cliente.attributes["nit"].value
-        nombre = cliente.getElementsByTagName("nombre")[0].firstChild.data
-        usuario = cliente.getElementsByTagName("usuario")[0].firstChild.data
-        clave = cliente.getElementsByTagName("clave")[0].firstChild.data
-        direccion = cliente.getElementsByTagName("direccion")[0].firstChild.data
-        email = cliente.getElementsByTagName("correoElectronico")[0].firstChild.data
+        nit = cliente.attributes["nit"].value.strip()
+        nombre = cliente.getElementsByTagName("nombre")[0].firstChild.data.strip()
+        usuario = cliente.getElementsByTagName("usuario")[0].firstChild.data.strip()
+        clave = cliente.getElementsByTagName("clave")[0].firstChild.data.strip()
+        direccion = cliente.getElementsByTagName("direccion")[0].firstChild.data.strip()
+        email = cliente.getElementsByTagName("correoElectronico")[0].firstChild.data.strip()
         lista_instancias = []
 
         Instancias = cliente.getElementsByTagName("instancia")
         for instancia in Instancias:
             id_instancia = instancia.attributes["id"].value
-            id_config = instancia.getElementsByTagName("idConfiguracion")[0].firstChild.data
-            fechai = instancia.getElementsByTagName("fechaInicio")[0].firstChild.data
+            id_config = instancia.getElementsByTagName("idConfiguracion")[0].firstChild.data.strip()
+            fechai = instancia.getElementsByTagName("fechaInicio")[0].firstChild.data.strip()
             match_str = re.search(r'\d{2}/\d{2}/\d{4}', fechai)
-            if len(match_str) > 0:
+            if match_str != None:
                 f_inicio = datetime.strptime(match_str.group(), '%d/%m/%Y').date()
             else:
                 f_inicio = ""
-            estado = instancia.getElementsByTagName("estado")[0].firstChild.data
+            estado = instancia.getElementsByTagName("estado")[0].firstChild.data.strip()
             if estado.lower() == "cancelada":
-                fechaf = instancia.getElementsByTagName("fechaFinal")[0].firstChild.data
+                fechaf = instancia.getElementsByTagName("fechaFinal")[0].firstChild.data.strip()
                 match_str = re.search(r'\d{2}/\d{2}/\d{4}', fechaf)
                 f_final = datetime.strptime(match_str.group(), '%d/%m/%Y').date()
             else:
                 f_final = ""
-            nombre_instancia = instancia.getElementsByTagName("nombre")[0].firstChild.data
-            lista_instancias.append(Instancia(id_instancia, id_config, f_inicio, estado, f_final, nombre_instancia))
+            nombre_instancia = instancia.getElementsByTagName("nombre")[0].firstChild.data.strip()
+            insta = Instancia(id_instancia, id_config, f_inicio, estado, f_final, nombre_instancia)
+            lista_instancias.append(insta)
+            global_instancias.append(insta)
             instancias_creadas += 1
         
         global_clientes.append(Cliente(nit, nombre, usuario, clave, direccion, email, lista_instancias))
@@ -191,7 +192,7 @@ def cargar_config():
     return jsonify({"mensaje": "se han creado "+str(clientes_creados)+" clientes, "+str(instancias_creadas)+" instancias, "
                     +str(recursos_creados)+" recursos, "+str(categorias_creadas)+" categorias y "+str(configs_creadas)+" configuraciones con exito"})
 
-@app.route("/cargar_consumo" )
+@app.route("/cargar_consumo", methods = ["POST"])
 def cargar_consumo():
     consumos_procesados = 0
 
@@ -201,7 +202,7 @@ def cargar_consumo():
 
     Consumos = xml_O.getElementsByTagName("consumo")
 
-    for consumo in consumos:
+    for consumo in Consumos:
         nitCliente = consumo.attributes["nitCliente"].value
         idInstancia = consumo.attributes["idInstancia"].value
         tiempo = float(consumo.getElementsByTagName("tiempo")[0].firstChild.data)
@@ -211,19 +212,21 @@ def cargar_consumo():
 
         global_consumos.append(Consumo(nitCliente, idInstancia, tiempo, fechaHora))
         consumos_procesados += 1
-        
 
+    
     return jsonify({"mensaje": "se han procesado "+str(consumos_procesados)+" consumos"})
 
-@app.route("/facturar" )
+@app.route("/facturar", methods = ["POST"])
 def facturar():
     facturas_creadas = 0
     
-    f_inicio = datetime.strptime(request.json["fecha_inicio"].group(), '%d/%m/%Y').date()
-    f_final = datetime.strptime(request.json["fecha_final"].group(), '%d/%m/%Y').date()
-
+    f_inicio = datetime.strptime(request.json["fecha_inicio"], '%d/%m/%Y').date()
+    f_final = datetime.strptime(request.json["fecha_final"], '%d/%m/%Y').date()
     consumos_por_facturar = [x for x in global_consumos if x.fechaHora > f_inicio and x.fechaHora < f_final and x.facturado == False]
 
+    for consumo in consumos_por_facturar:
+        consumo.facturado = True
+        
     if len(consumos_por_facturar) == 0:
         return jsonify({"mensaje": "Nada por facturar, intente con otra fecha"})
 
@@ -238,7 +241,7 @@ def facturar():
 
     return jsonify({"mensaje": "se han creado "+str(facturas_creadas)+" facturas"})
         
-@app.route("/detalle_factura" )
+@app.route("/detalle_factura", methods = ["POST"])
 def detalle_factura():
     id_factura = request.json["factura"]
     archivo = "              Detalle para la Factura "+id_factura+"\n"
@@ -259,30 +262,108 @@ def detalle_factura():
         instancia = [x for x in cliente.lista_instancias if x.id_instancia == consumo.idInstancia][0]
         tiempo_total_instancia = 0
         for x in consumos_misma_instancia:
-            tiempo_total_instancia += consumo.tiempo
+            tiempo_total_instancia += x.tiempo
 
         archivo += "    Instancia: "+instancia.nombre+"\n"
         archivo += "    Tiempo utilizado: "+str(tiempo_total_instancia)+" horas\n"
         conf = [x for x in global_configs if x.id_configuracion == instancia.id_config][0]
-        archivo += "    Aporte: Q"+str(round(tiempo_total_instancia*conf.precio_total, 2))+" horas\n"
+        archivo += "    Aporte: Q"+str(round(tiempo_total_instancia*conf.precio_total, 2))+"\n"
         archivo += "        Detalle de recursos: \n"
         for recurso in conf.lista_recursos:
-            rec = [x for x in global_recursos if x.id_recurso == recurso.id_recurso]
+            rec = [x for x in global_recursos if x.id_recurso == recurso.id_recurso][0]
             archivo += "            Recurso: "+rec.id_recurso+"\n"
             archivo += "                Nombre: "+rec.nombre+"\n"
-            archivo += "                Cantidad: "+recurso.cantidad+"\n"
-            archivo += "                Aporte: Q"+str(round(tiempo_total_instancia*rec.precio, 2))+"\n"
+            archivo += "                Cantidad: "+str(recurso.cantidad)+"\n"
+            archivo += "                Aporte: Q"+str(round(tiempo_total_instancia*rec.precio*recurso.cantidad, 2))+"\n"
 
         total += tiempo_total_instancia*conf.precio_total
 
 
     archivo += "Total: Q"+str(round(total, 2))+"\n"
 
+    print(archivo)
     return jsonify({"detalle": archivo})
     
+@app.route("/analisis_cat", methods = ["POST"])
+def analisis_cat():
+    archivo = "              Analisis de Categoria y configuraciones\n"
+    f_inicio = datetime.strptime(request.json["fecha_inicio"], '%d/%m/%Y').date()
+    f_final = datetime.strptime(request.json["fecha_final"], '%d/%m/%Y').date()
+
+    archivo += "Fecha inicial:"+str(f_inicio)+"\n"
+    archivo += "Fecha final:"+str(f_final)+"\n"
+    
+    categorias = []
+    configuraciones = []
+    consumos_por_analizar = [x for x in global_consumos if x.fechaHora > f_inicio and x.fechaHora < f_final]
+    print(consumos_por_analizar)
+    for configuracion in global_configs:
+        aporte = 0
+        instancias_con_configuracion = [x.id_instancia for x in global_instancias if x.id_config == configuracion.id_configuracion]
+        for consumo in consumos_por_analizar:
+            if consumo.idInstancia in instancias_con_configuracion:
+                aporte += configuracion.precio_total * consumo.tiempo
+        configuraciones.append((configuracion,round(aporte, 2)))
+
+    for categoria in global_categorias:
+        aporte = 0
+        for conf in configuraciones:
+            if conf[0] in categoria.lista_configuraciones:
+                aporte += conf[1]
+        categorias.append((categoria, round(aporte, 2)))
+
+    archivo += "Categorias\n"
+    categorias.sort(key= lambda e: e[1], reverse = True)
+    configuraciones.sort(key= lambda e: e[1], reverse = True)
+    i = 1
+    for categoria in categorias:
+        archivo += "    "+str(i)+". "+categoria[0].id_categoria+": Q"+str(categoria[1])+"\n"
+        i+=1
+
+    archivo += "Configuraciones\n"
+    i = 1
+    for conf in configuraciones:
+        archivo += "    "+str(i)+". "+conf[0].id_configuracion+": Q"+str(conf[1])+"\n"
+        i+=1
+
+    print(archivo)
+    return jsonify({"resultado": archivo})
 
 
+@app.route("/analisis_rec", methods = ["POST"])
+def analisis_rec():
+    archivo = "              Analisis de Recursos\n"
+    f_inicio = datetime.strptime(request.json["fecha_inicio"], '%d/%m/%Y').date()
+    f_final = datetime.strptime(request.json["fecha_final"], '%d/%m/%Y').date()
+    
+    archivo += "Fecha inicial:"+str(f_inicio)+"\n"
+    archivo += "Fecha final:"+str(f_final)+"\n"
 
+    consumos_por_analizar = [x for x in global_consumos if x.fechaHora > f_inicio and x.fechaHora < f_final]
+
+    recursos = [[x,0] for x in global_recursos]
+
+    for consumo in consumos_por_analizar:
+        instancia = [x for x in global_instancias if x.id_instancia == consumo.idInstancia][0]
+        configuracion = [x for x in global_configs if instancia.id_config == x.id_configuracion][0]
+        for recurso in configuracion.lista_recursos:
+            cantidad = recurso.cantidad
+            rec = [x for x in recursos if x[0].id_recurso == recurso.id_recurso][0]
+            rec[1] += round(cantidad*rec[0].precio*consumo.tiempo, 2)
+    
+    recursos.sort(key= lambda e: e[1], reverse = True)
+    archivo += "Recursos\n"
+    i = 1
+    for recurso in recursos:
+        archivo += "    "+str(i)+". "+recurso[0].id_recurso+": Q"+str(recurso[1])+"\n"
+        i+=1
+
+    print(archivo)
+    return jsonify({"resultado": archivo})
+
+@app.route("/get_facturas")
+def get_facturas():
+    return jsonify({"facturas": [x.id_factura for x in global_facturas]})
 
 if __name__ == "__main__":
     app.run(debug = True, port = 3100)
