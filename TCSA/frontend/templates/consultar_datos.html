@@ -1,0 +1,125 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+<h1 class="display-4">Categor&iacute;as</h1>
+<div class="container-fluid">
+<div class="d-flex flex-row flex-nowrap overflow-auto">
+	{% for x in data.categorias %}
+	<div class="card mx-2 card-block border-5" style="min-width: 18rem; margin-bottom: 2vh;">
+	  <div class="card-header">
+	    {{x.nombre}}
+	  </div>
+	  <div class="card-body">
+	    <p class="card-text">Id de categor&iacute;a: {{x.id_categoria}}</p>
+	    <p class="card-text">Descripci&oacute;n: {{x.desc}}</p>
+	    <p class="card-text">Carga: {{x.carga}}</p>
+	    <p class="card-text">Descripci&oacute;n: {{x.desc}}</p>
+	  </div>
+	  <ul class="list-group list-group-flush">
+	  	<h5>Lista de Configuraciones </h5>
+	  	{% for y in x.lista_configuraciones %}
+	  		<li class="list-group-item">&emsp;{{forloop.counter}}.- Id de configuraci&oacute;n: {{y}}</li>
+	    {% endfor %}
+	  </ul>
+	</div>
+	{% endfor %}
+</div>
+</div>
+<hr/>
+
+<h1 class="display-4">Configuraciones</h1>
+<div class="container-fluid">
+<div class="d-flex flex-row flex-nowrap overflow-auto">
+	{% for x in data.configs %}
+	<div class="card mx-2 card-block border-5" style="min-width: 18rem; margin-bottom: 2vh;">
+	  <div class="card-header">
+	    {{x.nombre}}
+	  </div>
+	  <div class="card-body">
+	    <p class="card-text">Id de configuraci&oacute;n: {{x.id_configuracion}}</p>
+	    <p class="card-text">Descripci&oacute;n: {{x.desc}}</p>
+	  </div>
+	  <ul class="list-group list-group-flush">
+	  	<h5>Lista de Recursos </h5>
+	  	{% for y in x.lista_recursos %}
+	  		<li class="list-group-item">&emsp;{{forloop.counter}}.- Recurso: {{y.id_recurso}}, Cantidad: {{y.cantidad}}</li>
+	    {% endfor %}
+	  </ul>
+	</div>
+	{% endfor %}
+</div>
+</div>
+<hr/>
+
+<h1 class="display-4">Recursos</h1>
+<div class="container-fluid">
+<div class="d-flex flex-row flex-nowrap overflow-auto">
+	{% for x in data.recursos %}
+	<div class="card mx-2 card-block border-5" style="min-width: 18rem; margin-bottom: 2vh;">
+	  <div class="card-header">
+	    {{x.nombre}}
+	  </div>
+	  <div class="card-body">
+	    <p class="card-text">Id de Recurso: {{x.id_recurso}}</p>
+	    <p class="card-text">Abreviatura: {{x.abrev}}</p>
+	    <p class="card-text">M&eacute;trica: {{x.metrica}}</p>
+	    <p class="card-text">Tipo: {{x.tipo}}</p>
+	    <p class="card-text">Precio: Q{{x.precio}}</p>
+	  </div>
+	</div>
+	{% endfor %}
+</div>
+</div>
+<hr/>
+
+<h1 class="display-4">Usuarios</h1>
+<div class="container-fluid">
+<div class="d-flex flex-row flex-nowrap overflow-auto">
+	{% for x in data.usuarios %}
+	<div class="card mx-2 card-block border-5" style="min-width: 18rem; margin-bottom: 2vh;">
+	  <div class="card-header">
+	    {{x.nombre}}
+	  </div>
+	  <div class="card-body">
+	    <p class="card-text">Usuario: {{x.usuario}}</p>
+	    <p class="card-text">Nit: {{x.nit}}</p>
+	    <p class="card-text">Password: {{x.clave}}</p>
+	    <p class="card-text">Direcci&oacute;n: {{x.direccion}}</p>
+	    <p class="card-text">E-mail: {{x.email}}</p>
+	  </div>
+	  <ul class="list-group list-group-flush">
+	  	<h5>Lista de Instancias </h5>
+	  	{% for y in x.lista_instancias %}
+	  		<li class="list-group-item">&emsp;{{forloop.counter}}.- Instancia: {{y}}</li>
+	    {% endfor %}
+	  </ul>
+	</div>
+	{% endfor %}
+</div>
+</div>
+<hr/>
+
+<h1 class="display-4">Instancias</h1>
+<div class="container-fluid">
+<div class="d-flex flex-row flex-nowrap overflow-auto">
+	{% for x in data.instancias %}
+	<div class="card mx-2 card-block border-5" style="min-width: 18rem; margin-bottom: 2vh;">
+	  <div class="card-header">
+	    {{x.nombre}}
+	  </div>
+	  <div class="card-body">
+	    <p class="card-text">Id de instancia: {{x.id_instancia}}</p>
+	    <p class="card-text">Id de configuraci&oacute;n: {{x.id_config}}</p>
+	    <p class="card-text">Estado: {{x.estado}}</p>
+	    <p class="card-text">Fecha de inicio: {{x.f_inicio}}</p>
+	    <p class="card-text">Fecha de finalizaci&oacute;n: {{x.f_final}}</p>
+	  </div>
+	</div>
+	{% endfor %}
+</div>
+</div>
+<hr/>
+
+{% endblock %}

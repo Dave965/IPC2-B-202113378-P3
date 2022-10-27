@@ -1,0 +1,65 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<h1 class="display-4">Hola! Bienvenido a Tecnologias chapinas S.A.</h1>
+<p class="lead">
+  utiliza el men&uacute; para seleccionar una opción
+</p>
+<div class="container">
+  <div class="row" style="margin-bottom: 5vh;">
+    <div class="col-sm">
+      <div style= "display: table; text-align: center;">
+	      <a role="button" href="{% url 'm_config'%}" style= "height: 35vh; width: 30vw; display: table-cell; vertical-align: middle;" class="btn btn-success btn-lg">
+	      
+	      	<p class="h4">Enviar un mensaje de configuracion</p>
+	      	<ul class="list-unstyled" style="margin-top: 2vh;">
+	      		<li>Puedes enviar un archivo xml</li>
+		 		<li>para configurar la estructura</li>
+				<li>del sistema.</li>
+		  	</ul>
+	      
+	      </a>
+      </div>
+    </div>
+    <div class="col-sm">
+      <div style= "display: table; text-align: center;">
+      	<a role="button" href="{% url 'm_consumo'%}" style= "height: 35vh; width: 30vw; display: table-cell; vertical-align: middle;" class="btn btn-danger btn-lg">
+      		<p class="h4">Enviar mensaje de consumo</p>
+	      	<ul class="list-unstyled" style="margin-top: 2vh;">
+	      		<li>Envia un archivo xml</li>
+		 		<li>para actualizar el uso</li>
+				<li>de una instancia registrada.</li>
+			</ul>
+		</a>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm">
+      <div style= "display: table; text-align: center;">
+      	<a role="button" href="{% url 'op_sis'%}" style= "height: 35vh; width: 30vw; display: table-cell; vertical-align: middle;" class="btn btn-info btn-lg">
+      	    <p class="h4">Operaciones del sistema</p>
+	      	<ul class="list-unstyled" style="margin-top: 2vh;">
+	      		<li>Consulta los datos cargados;</li>
+		 		<li>crea nuevos clientes, instancias,</li>
+				<li>configuraciones, categorias y recursos;</li>
+				<li>factura el consumo en determinadas fechas;</li>
+				<li>Y genera reportes para analizar los datos.</li>
+			</ul>
+		</a>
+	  </div>
+    </div>
+    <div class="col-sm">
+      <div style= "display: table; text-align: center;">
+      	<a role="button" href="{% url 'ayuda'%}" style= "height: 35vh; width: 30vw; display: table-cell; vertical-align: middle;" class="btn btn-secondary btn-lg">
+      		<p class="h4">Ayuda</p>
+	      	<ul class="list-unstyled" style="margin-top: 2vh;">
+	      		<li>Informacion acerca del desarrollador</li>
+		 		<li>y la pagina web.</li>
+			</ul>
+		</a>
+	  </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

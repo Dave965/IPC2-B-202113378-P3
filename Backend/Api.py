@@ -20,10 +20,12 @@ def consultar_datos():
     categorias = [x.convertir_json() for x in global_categorias]
     recursos = [x.convertir_json() for x in global_recursos]
     configs =[x.convertir_json() for x in global_configs]
+    instancias = [x.convertir_json() for x in global_instancias]
     return jsonify({"usuarios": usuarios,
                     "categorias": categorias,
                     "recursos": recursos,
-                    "configs": configs})
+                    "configs": configs,
+                    "instancias": instancias})
 
 @app.route("/crear_recurso", methods = ["POST"])
 def crear_recurso():
@@ -243,7 +245,7 @@ def facturar():
         
 @app.route("/detalle_factura", methods = ["POST"])
 def detalle_factura():
-    id_factura = request.json["factura"]
+    id_factura = request.json["id_factura"]
     archivo = "              Detalle para la Factura "+id_factura+"\n"
     total = 0
     factura = [x for x in global_facturas if x.id_factura == id_factura][0]
@@ -364,6 +366,7 @@ def analisis_rec():
 @app.route("/get_facturas")
 def get_facturas():
     return jsonify({"facturas": [x.id_factura for x in global_facturas]})
+
 
 if __name__ == "__main__":
     app.run(debug = True, port = 3100)

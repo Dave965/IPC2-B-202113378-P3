@@ -20,7 +20,7 @@ class Cliente:
         lista_instancias = []
         
         for instancia in self.lista_instancias:
-            lista_instancias.append(instancia.convertir_json())
+            lista_instancias.append(instancia.id_instancia)
 
         json_final["lista_instancias"] = lista_instancias
 
