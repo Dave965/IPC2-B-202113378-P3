@@ -1,0 +1,76 @@
+{% extends 'base.html'%}
+
+{% block content %}
+
+<div style="text-align: center; margin-bottom: 5vh;">
+	<h1 class="display-4">Creacion de datos</h1>
+</div>
+
+<div class="container">
+  <div class="row" style="margin-bottom: 5vh;">
+    <div class="col-sm">
+      <div style= "display: table; text-align: center;">
+	      <a role="button" href="{% url 'consulta_datos' %}" style= "height: 35vh; width: 30vw; display: table-cell; vertical-align: middle;" class="btn btn-info btn-lg">
+	      
+	      	<p class="h4">Nueva Categor&iacute;a</p>
+	      	<ul class="list-unstyled" style="margin-top: 2vh;">
+	      		<li>Crea una nueva categor&iacute;a.</li>
+		  	</ul>
+	      </a>
+      </div>
+    </div>
+    <div class="col-sm">
+      <div style= "display: table; text-align: center;">
+      	<a role="button" href="{% url 'c_recurso' %}" style= "height: 35vh; width: 30vw; display: table-cell; vertical-align: middle;" class="btn btn-secondary btn-lg">
+      		<p class="h4">Nuevo Recurso</p>
+	      	<ul class="list-unstyled" style="margin-top: 2vh;">
+	      		<li>Configura un nuevo recurso.</li>
+			</ul>
+		</a>
+      </div>
+    </div>
+    <div class="col-sm">
+      <div style= "display: table; text-align: center;">
+      	<a role="button" href="{% url 'crear_datos' %}" style= "height: 35vh; width: 30vw; display: table-cell; vertical-align: middle;" class="btn btn-danger btn-lg">
+      		<p class="h4">Nueva Configuraci&oacute;n</p>
+	      	<ul class="list-unstyled" style="margin-top: 2vh;">
+	      		<li>Añade una nueva configuraci&oacute;n</li>
+			</ul>
+		</a>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm">
+      <div style= "display: table; text-align: center;">
+      	<a role="button" href="{% url 'c_cliente' %}" style= "height: 35vh; width: 30vw; display: table-cell; vertical-align: middle;" class="btn btn-success btn-lg">
+      	    <p class="h4">Nuevo Cliente</p>
+	      	<ul class="list-unstyled" style="margin-top: 2vh;">
+	      		<li>Registra un nuevo cliente </li>
+			</ul>
+		</a>
+	  </div>
+    </div>
+    <div class="col-sm">
+      <div style= "display: table; text-align: center;">
+      	<a role="button" href="{% url 'reportes' %}" style= "height: 35vh; width: 30vw; display: table-cell; vertical-align: middle;" class="btn btn-primary btn-lg">
+      		<p class="h4">Nueva Instancia</p>
+	      	<ul class="list-unstyled" style="margin-top: 2vh;">
+	      		<li>Genera una nueva instancia</li>
+			</ul>
+		</a>
+	  </div>
+    </div>
+    <div class="col-sm">
+      <div style= "display: table; text-align: center;">
+      	<a role="button" href="{% url 'reportes' %}" style= "height: 35vh; width: 30vw; display: table-cell; vertical-align: middle;" class="btn btn-dark btn-lg">
+      		<p class="h4">Cancelar Instancia</p>
+	      	<ul class="list-unstyled" style="margin-top: 2vh;">
+	      		<li>Cancela una instancia</li>
+			</ul>
+		</a>
+	  </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

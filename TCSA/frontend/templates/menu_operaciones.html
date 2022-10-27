@@ -1,5 +1,72 @@
 {% extends 'base.html'%}
 
 {% block content %}
-<h1 class="display-4">Operaciones del sistema</h1>
+
+<div style="text-align: center; margin-bottom: 5vh;">
+	<h1 class="display-4">Operaciones del sistema</h1>
+</div>
+
+<div class="container">
+  <div class="row" style="margin-bottom: 5vh;">
+    <div class="col-sm">
+      <div style= "display: table; text-align: center;">
+	      <a role="button" href="{% url 'consulta_datos' %}" style= "height: 35vh; width: 30vw; display: table-cell; vertical-align: middle;" class="btn btn-danger btn-lg">
+	      
+	      	<p class="h4">Consultar Datos</p>
+	      	<ul class="list-unstyled" style="margin-top: 2vh;">
+	      		<li> Revisa la estructura de información</li>
+		 		<li>que actualmente maneja el sistema, es </li>
+				<li>decir, podras ver las categorías,</li>
+				<li>recursos y configuraciones disponibles,</li>
+				<li>o bien, los clientes e instancias</li>
+				<li>registradas.</li>
+		  	</ul>
+	      
+	      </a>
+      </div>
+    </div>
+    <div class="col-sm">
+      <div style= "display: table; text-align: center;">
+      	<a role="button" href="{% url 'crear_datos' %}" style= "height: 35vh; width: 30vw; display: table-cell; vertical-align: middle;" class="btn btn-info btn-lg">
+      		<p class="h4">Creaci&oacute;n de datos</p>
+	      	<ul class="list-unstyled" style="margin-top: 2vh;">
+	      		<li>Podras crear nueva informaci&oacute;n,</li>
+		 		<li>es decir, podrá crear nuevas categor&iacute;as,</li>
+				<li>nuevos recursos, nuevas configuraciones,</li>
+				<li>nuevos clientes o registrar nuevas instancias,</li>
+				<li>así como cancelar instancias.</li>
+			</ul>
+		</a>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm">
+      <div style= "display: table; text-align: center;">
+      	<a role="button" href="{% url 'facturar'%}" style= "height: 35vh; width: 30vw; display: table-cell; vertical-align: middle;" class="btn btn-success btn-lg">
+      	    <p class="h4">Proceso de facturaci&oacute;n</p>
+	      	<ul class="list-unstyled" style="margin-top: 2vh;">
+	      		<li>Elije un rango de fechas y </li>
+		 		<li>se generará una factura para</li>
+				<li>cada cliente por todos los </li>
+				<li>recursos consumidos no facturados</li>
+				<li>previamente.</li>
+			</ul>
+		</a>
+	  </div>
+    </div>
+    <div class="col-sm">
+      <div style= "display: table; text-align: center;">
+      	<a role="button" href="{% url 'reportes' %}" style= "height: 35vh; width: 30vw; display: table-cell; vertical-align: middle;" class="btn btn-warning btn-lg">
+      		<p class="h4">Reportes en PDF</p>
+	      	<ul class="list-unstyled" style="margin-top: 2vh;">
+	      		<li>Genera Reportes en formato Pdf</li>
+		 		<li>para mostrar la informaci&oacute;n</li>
+		 		<li>guardada en la base de datos.</li>
+			</ul>
+		</a>
+	  </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

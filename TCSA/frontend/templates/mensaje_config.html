@@ -1,8 +1,16 @@
 {% extends 'base.html'%}
-
 {% block content %}
-<div style="text-align: center;">
+<div style = "padding: 2vw;">
+<div style="text-align: center; margin-bottom: 10vh;">
 	<h1 class="display-4">Mensaje de configuraci&oacute;n</h1>
 </div>
 
+<form action="/enviar_configuracion" method="POST" enctype="multipart/form-data">
+	{% csrf_token %}
+	<label for='file'>Carga tu archivo de configuracion</label>
+	<input type='file' id="file" name="file" accept="text/xml"/>
+	<br/>
+	<button type="submit" class="btn btn-dark btn-lg" style="margin-top: 2vh;"> Cargar </button>
+</form>
+</div>
 {% endblock %}
