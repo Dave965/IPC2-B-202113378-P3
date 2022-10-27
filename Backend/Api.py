@@ -54,15 +54,18 @@ def crear_categoria():
 def crear_configuracion():
     json_lista_recursos = request.json["lista_recursos"]
     lista_recursos = []
+    precio_total = 0
     
-    for recurso in lista_recursos:
-        id_recurso = recurso["id_recurso"]
-        cantidad = recurso["cantidad"]
+    for recurso in json_lista_recursos:
+        id_recurso = recurso["id_recurso"].strip()
+        cantidad = int(recurso["cantidad"])
+        rec = [x for x in global_recursos if x.id_recurso == id_recurso]
+        precio_total += rec[0].precio*cantidad
         lista_recursos.append(Recurso_conf(id_recurso, cantidad))
         
     
     n_configuracion = Configuracion(request.json["id_configuracion"], request.json["nombre"],
-                        request.json["desc"], lista_recursos)
+                                    request.json["desc"], precio_total, lista_recursos)
 
     global_configs.append(n_configuracion)
 
@@ -138,7 +141,7 @@ def cargar_config():
                 Recursos = configuracion.getElementsByTagName("recurso")
                 for recurso in Recursos:
                     id_recurso = recurso.attributes["id"].value.strip()
-                    cantidad = float(recurso.firstChild.data)
+                    cantidad = int(recurso.firstChild.data)
                     try:
                         rec = [x for x in global_recursos if x.id_recurso == id_recurso]
                         precio_total += rec[0].precio*cantidad

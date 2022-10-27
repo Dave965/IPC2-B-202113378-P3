@@ -1,6 +1,6 @@
 from django.shortcuts import render
 import requests
-from .forms import Cargar_datos, Form_cliente, Form_recurso
+from .forms import Cargar_datos, Form_cliente, Form_recurso, Form_categoria, Form_configuracion
 from django.contrib import messages
 
 endpoint = "http://127.0.0.1:3100"
@@ -88,9 +88,11 @@ def crear_recurso(request):
 
 def crear_cliente(request):
         context = {
-                'title': 'Nuevo cliente'}
+                'title': 'Nuevo cliente'
+                }
+        
         if request.method == 'POST':
-                form=Form_cliente(request.POST)
+                form = Form_cliente(request.POST)
                 json_data = {
                         "nit" : request.POST['nit'],
                         "nombre" : request.POST['nombre'],
@@ -105,9 +107,60 @@ def crear_cliente(request):
                         messages.info(request, response.json()["mensaje"])
                 else:
                         messages.error(request, "Error, formulario no valido")
-        else:
-                return render(request, "c_cliente.html")
         return render(request, "c_cliente.html", context)
+
+def crear_categoria(request):
+        r = requests.get(endpoint+"/consultar_datos").json()
+        context = {
+                'title': 'Nueva categoria',
+                'configuraciones': r["configs"]}
+        
+        if request.method == 'POST':
+                form = Form_categoria(request.POST)
+                json_data = {
+                        "id_categoria" : request.POST['id_categoria'],
+                        "nombre" : request.POST['nombre'],
+                        "desc" : request.POST['desc'],
+                        "carga" : request.POST['carga'],
+                        "lista_configuraciones" : request.POST['configuraciones']
+                }
+
+                if form.is_valid():
+                        response = requests.post(endpoint+"/crear_categoria",json=json_data)
+                        messages.info(request, response.json()["mensaje"])
+                else:
+                        messages.error(request, "Error, formulario no valido")
+                        
+        return render(request, "c_categoria.html", context)
+
+def crear_configuracion(request):
+        r = requests.get(endpoint+"/consultar_datos").json()
+        context = {
+                'title': 'Nueva configuracion',
+                'recursos': r["recursos"]}
+        
+        if request.method == 'POST':
+                form = Form_configuracion(request.POST)
+                lista_recursos = []
+                recs = request.POST.getlist('lista_recursos')
+                
+                for x in recs:
+                        lista_recursos.append({"id_recurso": x, "cantidad": request.POST['cantidad_'+x]})
+
+                json_data = {
+                        "id_configuracion" : request.POST['id_configuracion'],
+                        "nombre" : request.POST['nombre'],
+                        "desc" : request.POST['desc'],
+                        "lista_recursos" : lista_recursos
+                }
+
+                if form.is_valid():
+                        response = requests.post(endpoint+"/crear_configuracion",json=json_data)
+                        messages.info(request, response.json()["mensaje"])
+                else:
+                        messages.error(request, "Error, formulario no valido")
+                        
+        return render(request, "c_configuracion.html", context)
 
 def facturar(request):
         context = {

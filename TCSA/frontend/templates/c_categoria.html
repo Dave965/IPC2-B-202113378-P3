@@ -1,0 +1,42 @@
+{% extends 'base.html'%}
+{% block content %}
+<div style = "padding: 2vw;">
+<div style="text-align: center; margin-bottom: 5vh;">
+	<h1 class="display-4">Nueva Categor&iacute;a</h1>
+</div>
+
+<div style="text-align: center;">
+<form action="/creacion_datos/categoria" method="POST" enctype="multipart/form-data">
+	{% csrf_token %}
+	<div>
+	<label for='nombre'>Nombre: </label>
+	<input type='text' id="nombre" name="nombre"/>
+	</div>
+	<br/>
+	<div style ="margin-top: 1vh;">
+	<label for='id_categoria'>Id: </label>
+	<input type='text' id="id_categoria" name="id_categoria"/>
+	</div>
+	<br/>
+	<div>
+	<label for='desc'>Descripci&oacute;n: </label>
+	<textarea id="desc"  name="desc" cols="50" rows="5"></textarea>
+	</div>
+	<br/>
+	<div>
+	<div>
+	<label for='carga'>Carga de trabajo: </label>
+	<input type='text' id="carga" name="carga"/>
+	</div>
+	<br/>
+	<div>
+	<legend>Configuraciones:</legend>
+	{% for config in configuraciones %}
+	   	<input type="checkbox" id="{{config.id_configuracion}}" name="configuraciones" value="{{config.id_configuracion}}" />
+    	<label for="{{config.id_configuracion}}">{{config.nombre}}</label><br/>
+	{% endfor %}
+	<button type="submit" class="btn btn-success btn-lg" style="margin-top: 2vh;"> Cargar </button>
+</form>
+</div>
+</div>
+{% endblock %}

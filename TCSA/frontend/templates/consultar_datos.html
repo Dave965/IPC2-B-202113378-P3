@@ -7,7 +7,7 @@
 <div class="container-fluid">
 <div class="d-flex flex-row flex-nowrap overflow-auto">
 	{% for x in data.categorias %}
-	<div class="card mx-2 card-block border-5" style="min-width: 18rem; margin-bottom: 2vh;">
+	<div class="card mx-2 card-block border-5" style="min-width: 20rem; max-width: 20rem; margin-bottom: 2vh;">
 	  <div class="card-header">
 	    {{x.nombre}}
 	  </div>
@@ -15,7 +15,6 @@
 	    <p class="card-text">Id de categor&iacute;a: {{x.id_categoria}}</p>
 	    <p class="card-text">Descripci&oacute;n: {{x.desc}}</p>
 	    <p class="card-text">Carga: {{x.carga}}</p>
-	    <p class="card-text">Descripci&oacute;n: {{x.desc}}</p>
 	  </div>
 	  <ul class="list-group list-group-flush">
 	  	<h5>Lista de Configuraciones </h5>
@@ -33,7 +32,7 @@
 <div class="container-fluid">
 <div class="d-flex flex-row flex-nowrap overflow-auto">
 	{% for x in data.configs %}
-	<div class="card mx-2 card-block border-5" style="min-width: 18rem; margin-bottom: 2vh;">
+	<div class="card mx-2 card-block border-5" style="min-width: 20rem; max-width: 20rem; margin-bottom: 2vh;">
 	  <div class="card-header">
 	    {{x.nombre}}
 	  </div>
@@ -57,7 +56,7 @@
 <div class="container-fluid">
 <div class="d-flex flex-row flex-nowrap overflow-auto">
 	{% for x in data.recursos %}
-	<div class="card mx-2 card-block border-5" style="min-width: 18rem; margin-bottom: 2vh;">
+	<div class="card mx-2 card-block border-5" style="min-width: 20rem; max-width: 20rem; margin-bottom: 2vh;">
 	  <div class="card-header">
 	    {{x.nombre}}
 	  </div>
@@ -78,7 +77,7 @@
 <div class="container-fluid">
 <div class="d-flex flex-row flex-nowrap overflow-auto">
 	{% for x in data.usuarios %}
-	<div class="card mx-2 card-block border-5" style="min-width: 18rem; margin-bottom: 2vh;">
+	<div class="card mx-2 card-block border-5" style="min-width: 20rem; max-width: 20rem; margin-bottom: 2vh;">
 	  <div class="card-header">
 	    {{x.nombre}}
 	  </div>
@@ -105,7 +104,7 @@
 <div class="container-fluid">
 <div class="d-flex flex-row flex-nowrap overflow-auto">
 	{% for x in data.instancias %}
-	<div class="card mx-2 card-block border-5" style="min-width: 18rem; margin-bottom: 2vh;">
+	<div class="card mx-2 card-block border-5" style="min-width: 20rem; max-width: 20rem; margin-bottom: 2vh;">
 	  <div class="card-header">
 	    {{x.nombre}}
 	  </div>

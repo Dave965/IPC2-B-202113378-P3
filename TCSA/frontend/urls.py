@@ -12,6 +12,8 @@ urlpatterns = [
     path("creacion_datos", views.crear_datos, name="crear_datos"),
     path("creacion_datos/cliente", views.crear_cliente, name="c_cliente"),
     path("creacion_datos/recurso", views.crear_recurso, name="c_recurso"),
+    path("creacion_datos/categoria", views.crear_categoria, name="c_categoria"),
+    path("creacion_datos/configuracion", views.crear_configuracion, name="c_configuracion"),
     path("facturacion", views.facturar, name="facturar"),
     path("reportes", views.reportes, name="reportes"),
 

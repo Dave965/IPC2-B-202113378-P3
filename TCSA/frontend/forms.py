@@ -17,3 +17,14 @@ class Form_recurso(forms.Form):
     abrev = forms.CharField(label="abrev")
     metrica = forms.CharField(label="metrica")
     precio = forms.DecimalField(label="precio")
+
+class Form_categoria(forms.Form):
+    nombre = forms.CharField(label="nombre")
+    id_categoria = forms.CharField(label="Id")
+    desc = forms.CharField(label="desc")
+    carga = forms.CharField(label="carga")
+
+class Form_configuracion(forms.Form):
+    nombre = forms.CharField(label="nombre")
+    id_configuracion = forms.CharField(label="Id")
+    desc = forms.CharField(label="desc")
