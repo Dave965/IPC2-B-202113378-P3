@@ -2,7 +2,7 @@ from Clases import *
 from xml.dom.minidom import parse, parseString
 from flask import Flask, jsonify, request
 import re
-from datetime import datetime
+from datetime import datetime, date
 
 global_categorias = []
 global_recursos = []
@@ -86,14 +86,16 @@ def crear_cliente():
 
 @app.route("/crear_instancia", methods = ["POST"])
 def crear_instancia():
+    
     cliente = [x for x in global_clientes if x.nit == request.json["nit"]]
     
     n_instancia = Instancia(request.json["id_instancia"], request.json["id_config"],
-                          request.json["f_inicio"], request.json["estado"], None)
+                          date.today(), "Vigente", "", request.json["nombre"])
     
     cliente[0].lista_instancias.append(n_instancia)
-
-    return jsonify({"mensaje": "se ha creado la instancia para el usuario "+cliente[0].nombre+"con exito"})
+    global_instancias.append(n_instancia)
+    
+    return jsonify({"mensaje": "se ha creado la instancia para el usuario "+cliente[0].nombre+" con exito"})
 
 @app.route("/cargar_config", methods = ["POST"])
 def cargar_config():

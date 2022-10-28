@@ -28,3 +28,8 @@ class Form_configuracion(forms.Form):
     nombre = forms.CharField(label="nombre")
     id_configuracion = forms.CharField(label="Id")
     desc = forms.CharField(label="desc")
+
+class Form_instancia(forms.Form):
+    cliente = forms.CharField(label="cliente", required = False)
+    nombre = forms.CharField(label="Nombre")
+    id_instancia = forms.CharField(label="id_instancia")
