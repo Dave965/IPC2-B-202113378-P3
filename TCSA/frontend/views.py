@@ -2,6 +2,9 @@ from django.shortcuts import render
 import requests
 from .forms import Cargar_datos, Form_cliente, Form_recurso, Form_categoria, Form_configuracion, Form_instancia, Form_fechas
 from django.contrib import messages
+import textwrap
+from django.http import FileResponse
+from fpdf import FPDF
 
 endpoint = "http://127.0.0.1:3100"
 
@@ -216,7 +219,8 @@ def cancelar_instancia(request):
 
 def facturar(request):
         context = {
-                'title': 'Facturacion'}
+                'title': 'Facturación',
+                'accion' : '/facturacion'}
         
         if request.method == 'POST':
                 form = Form_fechas(request.POST)
@@ -235,4 +239,87 @@ def facturar(request):
 def reportes(request):
         context = {
                 'title': 'Reportes pdf'}
-        return render(request, "Reportes", context)
+        return render(request, "menu_reportes.html", context)
+
+def detalle_factura(request):
+        r = requests.get(endpoint+"/get_facturas").json()
+        context = {
+                'title': 'Detalle Factura',
+                'facturas': r['facturas']}
+        print(context)
+        if request.method == 'POST':
+                if request.POST:
+                        json_data = {
+                                "id_factura" : request.POST['id_factura'],
+                                }
+                        response = requests.post(endpoint+"/detalle_factura",json=json_data)
+                        file = text_to_pdf(response.json()["detalle"], 'detalle_factura_'+request.POST['id_factura']+'.pdf')
+                        return file
+                
+        return render(request, "detalle_factura.html", context)
+
+def reporte_analisis_categoria(request):
+        context = {
+                'title' : 'Análisis de Categoría',
+                'accion' : '/reportes/analisis_categoria'}
+        
+        if request.method == 'POST':
+                form = Form_fechas(request.POST)
+
+                if form.is_valid():
+                        json_data = {
+                                "fecha_inicio" : request.POST['f_inicio'],
+                                "fecha_final" : request.POST['f_final']
+                                }
+                        response = requests.post(endpoint+"/analisis_cat",json=json_data)
+                        file = text_to_pdf(response.json()["resultado"], 'analisis_categoria_'+request.POST['f_inicio']+'_'+request.POST['f_final']+'.pdf')
+                        return file
+                
+        return render(request, "facturacion.html", context)
+
+def reporte_analisis_recurso(request):
+        context = {
+                'title': 'Análisis de Recurso',
+                'accion' : '/reportes/analisis_recurso'}
+        
+        if request.method == 'POST':
+                form = Form_fechas(request.POST)
+
+                if form.is_valid():
+                        json_data = {
+                                "fecha_inicio" : request.POST['f_inicio'],
+                                "fecha_final" : request.POST['f_final']
+                                }
+                        response = requests.post(endpoint+"/analisis_rec",json=json_data)
+                        file = text_to_pdf(response.json()["resultado"], 'analisis_recurso_'+request.POST['f_inicio']+'_'+request.POST['f_final']+'.pdf')
+                        return file
+                
+        return render(request, "facturacion.html", context)
+
+def text_to_pdf(text, filename):
+    a4_width_mm = 210
+    pt_to_mm = 0.35
+    fontsize_pt = 10
+    fontsize_mm = fontsize_pt * pt_to_mm
+    margin_bottom_mm = 10
+    character_width_mm = 7 * pt_to_mm
+    width_text = a4_width_mm / character_width_mm
+
+    pdf = FPDF(orientation='P', unit='mm', format='A4')
+    pdf.set_auto_page_break(True, margin=margin_bottom_mm)
+    pdf.add_page()
+    pdf.set_font(family='Courier', size=fontsize_pt)
+    splitted = text.split('\n')
+
+    for line in splitted:
+        lines = textwrap.wrap(line, width_text)
+
+        if len(lines) == 0:
+            pdf.ln()
+
+        for wrap in lines:
+            pdf.cell(0, fontsize_mm, wrap, ln=1)
+
+    pdf.output(filename, 'F')
+    return FileResponse(open(filename,'rb'), as_attachment=True, content_type='application/pdf')
+    

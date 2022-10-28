@@ -267,7 +267,7 @@ def facturar():
 @app.route("/detalle_factura", methods = ["POST"])
 def detalle_factura():
     id_factura = request.json["id_factura"]
-    archivo = "              Detalle para la Factura "+id_factura+"\n"
+    archivo = "                            Detalle para la Factura "+id_factura+"\n"
     total = 0
     factura = [x for x in global_facturas if x.id_factura == id_factura][0]
     cliente  = [x for x in global_clientes if x.nit == factura.nitCliente][0]
@@ -295,7 +295,7 @@ def detalle_factura():
         for recurso in conf.lista_recursos:
             rec = [x for x in global_recursos if x.id_recurso == recurso.id_recurso][0]
             archivo += "            Recurso: "+rec.id_recurso+"\n"
-            archivo += "                Nombre: "+rec.nombre+"\n"
+            archivo += "                Nombre: "+rec.nombre+" "+rec.metrica+"\n"
             archivo += "                Cantidad: "+str(recurso.cantidad)+"\n"
             archivo += "                Aporte: Q"+str(round(tiempo_total_instancia*rec.precio*recurso.cantidad, 2))+"\n"
 
@@ -309,9 +309,9 @@ def detalle_factura():
     
 @app.route("/analisis_cat", methods = ["POST"])
 def analisis_cat():
-    archivo = "              Analisis de Categoria y configuraciones\n"
-    f_inicio = datetime.strptime(request.json["fecha_inicio"], '%d/%m/%Y').date()
-    f_final = datetime.strptime(request.json["fecha_final"], '%d/%m/%Y').date()
+    archivo = "                            Analisis de Categoria y configuraciones\n"
+    f_inicio = datetime.strptime(request.json["fecha_inicio"], '%Y-%m-%d').date()
+    f_final = datetime.strptime(request.json["fecha_final"], '%Y-%m-%d').date()
 
     archivo += "Fecha inicial:"+str(f_inicio)+"\n"
     archivo += "Fecha final:"+str(f_final)+"\n"
@@ -355,9 +355,9 @@ def analisis_cat():
 
 @app.route("/analisis_rec", methods = ["POST"])
 def analisis_rec():
-    archivo = "              Analisis de Recursos\n"
-    f_inicio = datetime.strptime(request.json["fecha_inicio"], '%d/%m/%Y').date()
-    f_final = datetime.strptime(request.json["fecha_final"], '%d/%m/%Y').date()
+    archivo = "                                          Analisis de Recursos\n"
+    f_inicio = datetime.strptime(request.json["fecha_inicio"], '%Y-%m-%d').date()
+    f_final = datetime.strptime(request.json["fecha_final"], '%Y-%m-%d').date()
     
     archivo += "Fecha inicial:"+str(f_inicio)+"\n"
     archivo += "Fecha final:"+str(f_final)+"\n"

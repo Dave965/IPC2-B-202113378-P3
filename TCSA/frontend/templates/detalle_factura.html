@@ -1,0 +1,23 @@
+{% extends 'base.html'%}
+{% block content %}
+<div style = "padding: 2vw;">
+<div style="text-align: center; margin-bottom: 5vh;">
+	<h1 class="display-4">Detalle de Factura</h1>
+</div>
+
+<div style="text-align: center;">
+<form action="/reportes/factura" method="POST" enctype="multipart/form-data">
+	{% csrf_token %}
+	<div>
+	<legend>Factura:</legend>
+	<select name="id_factura">
+		{% for factura in facturas %}
+	  		<option value="{{factura}}">{{factura}}</option>
+	  	{% endfor %}
+	</select>
+	</div>
+	<button type="submit" class="btn btn-success btn-lg" style="margin-top: 2vh;"> Generar Reporte </button>
+</form>
+</div>
+</div>
+{% endblock %}

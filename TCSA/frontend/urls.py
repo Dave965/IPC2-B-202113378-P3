@@ -18,5 +18,8 @@ urlpatterns = [
     path("creacion_datos/cancelar_instancia", views.cancelar_instancia, name="cancelar_instancia"),
     path("facturacion", views.facturar, name="facturar"),
     path("reportes", views.reportes, name="reportes"),
+    path("reportes/factura", views.detalle_factura, name="d_factura"),
+    path("reportes/analisis_categoria", views.reporte_analisis_categoria, name="a_categoria"),
+    path("reportes/analisis_recurso", views.reporte_analisis_recurso, name="a_recurso"),
 
 ]

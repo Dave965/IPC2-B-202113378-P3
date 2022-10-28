@@ -28,7 +28,7 @@
 	<legend>Recursos:</legend>
 	{% for recurso in recursos %}
 	   	<input type="checkbox" id="{{recurso.id_recurso}}" name="lista_recursos" value="{{recurso.id_recurso}}" />
-    	<label for="{{recurso.id_recurso}}">{{recurso.nombre}}</label>
+    	<label for="{{recurso.id_recurso}}">{{recurso.nombre}} {{recurso.metrica}}</label>
     	<label style="margin-left: 2vw;" for='cantidad_{{recurso.id_recurso}}'>Cantidad: </label> 
     	<input type='number' step="1" id="cantidad_{{recurso.id_recurso}}" name="cantidad_{{recurso.id_recurso}}"/>
     	<br/>
