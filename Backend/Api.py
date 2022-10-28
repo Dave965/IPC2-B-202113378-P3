@@ -95,7 +95,17 @@ def crear_instancia():
     cliente[0].lista_instancias.append(n_instancia)
     global_instancias.append(n_instancia)
     
-    return jsonify({"mensaje": "se ha creado la instancia para el usuario "+cliente[0].nombre+" con exito"})
+    return jsonify({"mensaje": "se ha creado la instancia para el usuario "+cliente[0].nombre+" on exito"})
+
+@app.route("/cancelar_instancia", methods = ["POST"])
+def cancelar_instancia():
+    
+    instancia = [x for x in global_instancias if x.id_instancia == request.json["id_instancia"]][0]
+
+    instancia.estado = "Cancelada"
+    instancia.f_final = date.today()
+    
+    return jsonify({"mensaje": "Se ha cancelado la instancia "+instancia.nombre})
 
 @app.route("/cargar_config", methods = ["POST"])
 def cargar_config():

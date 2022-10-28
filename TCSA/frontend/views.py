@@ -166,7 +166,7 @@ def crear_configuracion(request):
 def crear_instancia(request):
         r = requests.get(endpoint+"/consultar_datos").json()
         context = {
-                'title': 'Nueva configuracion',
+                'title': 'Nueva instancia',
                 'clientes': r["usuarios"],
                 'configuraciones': r["configs"]}
         
@@ -185,8 +185,34 @@ def crear_instancia(request):
                         messages.info(request, response.json()["mensaje"])
                 else:
                         messages.error(request, "Error, formulario no valido")
-                        
+                     
         return render(request, "c_instancia.html", context)
+
+def cancelar_instancia(request):
+        r = requests.get(endpoint+"/consultar_datos").json()
+        context = {
+                'title': 'Cancelar instancia',
+                'clientes': r["usuarios"],
+                'instancias': [],
+                "seleccionado": ""}
+
+        if request.method == 'POST':
+                if request.POST:
+                        json_data = {
+                                "id_instancia" : request.POST['id_instancia'],
+                                }
+                        response = requests.post(endpoint+"/cancelar_instancia",json=json_data)
+                        messages.error(request, response.json()["mensaje"])
+                        
+        elif request.method == 'GET':
+                if request.GET:
+                        context["seleccionado"] = request.GET['nit']
+                        cliente = [x for x in context["clientes"] if x["nit"] == request.GET['nit']][0]
+                        context["instancias"] = [x for x in r["instancias"] if x["id_instancia"] in cliente["lista_instancias"] and x["estado"].lower() != "cancelada"]
+                        return render(request, "cancelar_instancia.html", context)
+        else:
+                return render(request, "cancelar_instancia.html", context)
+        return render(request, "cancelar_instancia.html", context)
 
 def facturar(request):
         context = {

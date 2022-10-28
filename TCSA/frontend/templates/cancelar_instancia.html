@@ -1,0 +1,39 @@
+{% extends 'base.html'%}
+{% block content %}
+<div style = "padding: 2vw;">
+<div style="text-align: center; margin-bottom: 5vh;">
+	<h1 class="display-4">Cancelar Instancia</h1>
+</div>
+
+<div style="text-align: center;">
+<form action="/creacion_datos/cancelar_instancia" method="GET" enctype="multipart/form-data">
+	{% csrf_token %}
+	<div>
+	<legend>Cliente:</legend>
+	<select name="nit">
+		{% for cliente in clientes %}
+			{% if cliente.nit == seleccionado %}
+			<option value="{{cliente.nit}}" selected>{{cliente.nombre}}</option>
+			{% else %}
+	  		<option value="{{cliente.nit}}">{{cliente.nombre}}</option>
+			{% endif %}}
+	  	{% endfor %}
+	</select>
+	</div>
+	<button type="submit" class="btn btn-dark btn-lg" style="margin-top: 2vh;"> Buscar </button>
+</form>
+<form action="/creacion_datos/cancelar_instancia" method="POST" enctype="multipart/form-data">
+	{% csrf_token %}
+	<div>
+	<legend>Instancia:</legend>
+	<select name="id_instancia">
+		{% for instancia in instancias %}
+	  		<option value="{{instancia.id_instancia}}">{{instancia.nombre}}</option>
+	  	{% endfor %}
+	</select>
+	</div>
+	<button type="submit" class="btn btn-danger btn-lg" style="margin-top: 2vh;"> Detener instancia </button>
+</form>
+</div>
+</div>
+{% endblock %}

@@ -15,6 +15,7 @@ urlpatterns = [
     path("creacion_datos/categoria", views.crear_categoria, name="c_categoria"),
     path("creacion_datos/configuracion", views.crear_configuracion, name="c_configuracion"),
     path("creacion_datos/instancia", views.crear_instancia, name="c_instancia"),
+    path("creacion_datos/cancelar_instancia", views.cancelar_instancia, name="cancelar_instancia"),
     path("facturacion", views.facturar, name="facturar"),
     path("reportes", views.reportes, name="reportes"),
 
