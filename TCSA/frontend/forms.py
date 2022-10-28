@@ -33,3 +33,7 @@ class Form_instancia(forms.Form):
     cliente = forms.CharField(label="cliente", required = False)
     nombre = forms.CharField(label="Nombre")
     id_instancia = forms.CharField(label="id_instancia")
+
+class Form_fechas(forms.Form):
+    f_inicio = forms.DateField(label="f_inicio")
+    f_final = forms.DateField(label="f_final")

@@ -1,0 +1,25 @@
+{% extends 'base.html'%}
+{% block content %}
+<div style = "padding: 2vw;">
+<div style="text-align: center; margin-bottom: 5vh;">
+	<h1 class="display-4">Facturación</h1>
+</div>
+
+<div style="text-align: center;">
+<form action="/facturacion" method="POST" enctype="multipart/form-data">
+	{% csrf_token %}
+	<div>
+	<label for='f_inicio'>Fecha inicio: </label>
+	<input type='date' id="f_inicio" name="f_inicio"/>
+	</div>
+	<br/>
+	<div style ="margin-top: 1vh;">
+	<label for='f_final'>Fecha final: </label>
+	<input type='date' id="f_final" name="f_final"/>
+	</div>
+	<br/>
+	<button type="submit" class="btn btn-success btn-lg" style="margin-top: 2vh;"> Facturar </button>
+</form>
+</div>
+</div>
+{% endblock %}

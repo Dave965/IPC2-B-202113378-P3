@@ -243,8 +243,8 @@ def cargar_consumo():
 def facturar():
     facturas_creadas = 0
     
-    f_inicio = datetime.strptime(request.json["fecha_inicio"], '%d/%m/%Y').date()
-    f_final = datetime.strptime(request.json["fecha_final"], '%d/%m/%Y').date()
+    f_inicio = datetime.strptime(request.json["fecha_inicio"], '%Y-%m-%d').date()
+    f_final = datetime.strptime(request.json["fecha_final"], '%Y-%m-%d').date()
     consumos_por_facturar = [x for x in global_consumos if x.fechaHora > f_inicio and x.fechaHora < f_final and x.facturado == False]
 
     for consumo in consumos_por_facturar:

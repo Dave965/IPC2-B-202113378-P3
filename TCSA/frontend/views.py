@@ -1,6 +1,6 @@
 from django.shortcuts import render
 import requests
-from .forms import Cargar_datos, Form_cliente, Form_recurso, Form_categoria, Form_configuracion, Form_instancia
+from .forms import Cargar_datos, Form_cliente, Form_recurso, Form_categoria, Form_configuracion, Form_instancia, Form_fechas
 from django.contrib import messages
 
 endpoint = "http://127.0.0.1:3100"
@@ -217,7 +217,19 @@ def cancelar_instancia(request):
 def facturar(request):
         context = {
                 'title': 'Facturacion'}
-        return render(request, "Facturacion", context)
+        
+        if request.method == 'POST':
+                form = Form_fechas(request.POST)
+
+                if form.is_valid():
+                        json_data = {
+                                "fecha_inicio" : request.POST['f_inicio'],
+                                "fecha_final" : request.POST['f_final']
+                                }
+                        response = requests.post(endpoint+"/facturar",json=json_data)
+                        messages.info(request, response.json()["mensaje"])
+                
+        return render(request, "facturacion.html", context)
 
 
 def reportes(request):
