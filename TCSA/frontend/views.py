@@ -246,7 +246,6 @@ def detalle_factura(request):
         context = {
                 'title': 'Detalle Factura',
                 'facturas': r['facturas']}
-        print(context)
         if request.method == 'POST':
                 if request.POST:
                         json_data = {

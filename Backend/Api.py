@@ -11,6 +11,7 @@ global_clientes = []
 global_consumos = []
 global_facturas = []
 global_instancias = []
+open("sys.app", "w").close()
 
 app = Flask(__name__)
 
@@ -116,8 +117,11 @@ def cargar_config():
     configs_creadas = 0
 
     try:
-        xml_S = request.get_data()
-
+        xml_S = request.get_data().decode('utf-8', 'ignore')
+        file = open("sys.app","w")
+        file.write(xml_S+"\n")
+        file.close()
+        
         xml_O = parseString(xml_S)
 
         listaRecursos = xml_O.getElementsByTagName("listaRecursos")[0]
@@ -145,6 +149,10 @@ def cargar_config():
             Configuraciones = categoria.getElementsByTagName("configuracion")
             for configuracion in Configuraciones:
                 id_configuracion = configuracion.attributes["id"].value.strip()
+                configuracion_ya = [x for x in global_configs if x.id_configuracion == id_configuracion]
+                if len(configuracion_ya) != 0:
+                    lista_configuraciones.append(configuracion_ya[0])
+                    continue
                 nombre_conf = configuracion.getElementsByTagName("nombre")[0].firstChild.data.strip()
                 desc_conf = configuracion.getElementsByTagName("descripcion")[0].firstChild.data.strip()
                 lista_recursos = []
@@ -163,9 +171,10 @@ def cargar_config():
                     lista_recursos.append(Recurso_conf(id_recurso, cantidad))
                     
                 Config = Configuracion(id_configuracion, nombre_conf, desc_conf, precio_total, lista_recursos)
+
                 global_configs.append(Config)
                 lista_configuraciones.append(Config)
-                configs_creadas += 1
+                configs_creadas += 1    
 
             global_categorias.append(Categoria(id_categoria, nombre_categoria, desc_categoria, carga, lista_configuraciones))
             categorias_creadas += 1
