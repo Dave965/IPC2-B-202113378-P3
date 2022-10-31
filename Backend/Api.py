@@ -16,7 +16,7 @@ open("sys.app", "w").close()
 app = Flask(__name__)
 
 @app.route("/consultar_datos" )
-def consultar_datos():
+def consultar_datos(): 
     usuarios = [x.convertir_json() for x in global_clientes]
     categorias = [x.convertir_json() for x in global_categorias]
     recursos = [x.convertir_json() for x in global_recursos]
@@ -312,8 +312,6 @@ def detalle_factura():
 
 
     archivo += "Total: Q"+str(round(total, 2))+"\n"
-
-    print(archivo)
     return jsonify({"detalle": archivo})
     
 @app.route("/analisis_cat", methods = ["POST"])
@@ -328,7 +326,6 @@ def analisis_cat():
     categorias = []
     configuraciones = []
     consumos_por_analizar = [x for x in global_consumos if x.fechaHora > f_inicio and x.fechaHora < f_final]
-    print(consumos_por_analizar)
     for configuracion in global_configs:
         aporte = 0
         instancias_con_configuracion = [x.id_instancia for x in global_instancias if x.id_config == configuracion.id_configuracion]
@@ -358,7 +355,6 @@ def analisis_cat():
         archivo += "    "+str(i)+". "+conf[0].id_configuracion+": Q"+str(conf[1])+"\n"
         i+=1
 
-    print(archivo)
     return jsonify({"resultado": archivo})
 
 
